@@ -81,9 +81,6 @@ public class LocalAlignment extends Alignment {
 			int direction = matrixCell.getDirection();
 			queryStart =  matrixCell.getRow();
 			dataStart = matrixCell.getColumn();
-//			System.out.println(queryStart);
-//			System.out.println(dataStart);
-//			System.out.println("dir:" + direction);
 			if(direction == 1){ // horizontal - insertion
 				matrixCell = dpMatrix[queryStart][dataStart-1];
 				querysb.append("-");
@@ -94,7 +91,7 @@ public class LocalAlignment extends Alignment {
 				querysb.append(query.getSequence().charAt(queryStart-1));
 				datasb.append("-");
 			}
-			else if(direction == 3){ // diagonal
+			else if(direction == 3){ // diagonal - match/mismatch
 				matrixCell = dpMatrix[queryStart-1][dataStart-1];
 //				System.out.println("row: "+ (matrixCell.getRow()));
 //				System.out.println("col: "+ (matrixCell.getColumn()));

@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class hw1 {
 	static int alignmentType;
@@ -37,18 +35,26 @@ public class hw1 {
 //	               System.out.println(dataSequences);
 	               List<OutputSequence>outputSequences = new ArrayList<>();
 	               if(alignmentType == 1){
-	            	  //  new GlobalAlignment();
+//	            	   ProteinSequence d = new ProteinSequence("actgttga",1);
+//	            	   ProteinSequence q = new ProteinSequence("acctgttg",2);
+//	            	   outputSequences.add(new GlobalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            	   System.out.println(outputSequences);
+	            	   for(ProteinSequence q : querySequences){
+	            		   for(ProteinSequence d : dataSequences){
+	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            		   }
+	            	   }
 	               }
 	               else if(alignmentType == 2){
-	            	   ProteinSequence d = new ProteinSequence("caagac",1);
-	            	   ProteinSequence q = new ProteinSequence("gaac",2);
-//	            	   for(ProteinSequence q : querySequences){
-//	            		   for(ProteinSequence d : dataSequences){
-//	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-//	            		   }
-//	            	   }
-	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-	            	   System.out.println(outputSequences);
+//	            	   ProteinSequence d = new ProteinSequence("caagac",1);
+//	            	   ProteinSequence q = new ProteinSequence("gaac",2);
+//	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            	   System.out.println(outputSequences);
+	            	   for(ProteinSequence q : querySequences){
+	            		   for(ProteinSequence d : dataSequences){
+	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            		   }
+	            	   }
 	               }
 	               else if(alignmentType == 3){
 	            	   new DovetailAlignment();
@@ -56,10 +62,17 @@ public class hw1 {
 	               else{
 	            	   System.out.println("Wrong Input");
 	               }
-//	               Collections.sort(outputSequences, new SortByScore());
-//	               for(int i=0;i< outputCount;i++){
-//	            	   System.out.println(outputSequences);
-//	               }
+	               Collections.sort(outputSequences, new SortByScore());
+	               int count = 0;
+	               for(OutputSequence op :  outputSequences){
+	            	   if(count<=outputCount){
+	            		   System.out.println(op);
+	            		   count++;
+	            	   }
+	            	   else{
+	            		   break;
+	            	   }
+	               }
 	            } catch (FileNotFoundException e) {
 	                e.printStackTrace();
 	            }
