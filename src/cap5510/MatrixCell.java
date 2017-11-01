@@ -54,6 +54,6 @@ public class MatrixCell {
 		else{
 			dir = "NONE";
 		}
-		return "[direction=" + dir + ", score=" + score + "]";
+		return "|" + dir + "|" + score + "|";
 	}
 }

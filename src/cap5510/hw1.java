@@ -48,31 +48,41 @@ public class hw1 {
 	               else if(alignmentType == 2){
 //	            	   ProteinSequence d = new ProteinSequence("caagac",1);
 //	            	   ProteinSequence q = new ProteinSequence("gaac",2);
-//	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-//	            	   System.out.println(outputSequences);
-	            	   for(ProteinSequence q : querySequences){
-	            		   for(ProteinSequence d : dataSequences){
-	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-	            		   }
-	            	   }
+	            	   ProteinSequence d = new ProteinSequence("gctggaaggcatta",1);
+	            	   ProteinSequence q = new ProteinSequence("tacaagcagagcacg",2);
+	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            	   System.out.println(outputSequences);
+//	            	   for(ProteinSequence q : querySequences){
+//	            		   for(ProteinSequence d : dataSequences){
+//	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            		   }
+//	            	   }
 	               }
 	               else if(alignmentType == 3){
-	            	   new DovetailAlignment();
+	            	   ProteinSequence d = new ProteinSequence("ccatgac",1);
+	            	   ProteinSequence q = new ProteinSequence("ttccagtg",2);
+	            	   outputSequences.add(new DovetailAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            	   System.out.println(outputSequences);
+//	            	   for(ProteinSequence q : querySequences){
+//	            		   for(ProteinSequence d : dataSequences){
+//	            			   outputSequences.add(new DovetailAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            		   }
+//	            	   }
 	               }
 	               else{
 	            	   System.out.println("Wrong Input");
 	               }
-	               Collections.sort(outputSequences, new SortByScore());
-	               int count = 0;
-	               for(OutputSequence op :  outputSequences){
-	            	   if(count<=outputCount){
-	            		   System.out.println(op);
-	            		   count++;
-	            	   }
-	            	   else{
-	            		   break;
-	            	   }
-	               }
+//	               Collections.sort(outputSequences, new SortByScore());
+//	               int count = 0;
+//	               for(OutputSequence op :  outputSequences){
+//	            	   if(count<=outputCount){
+//	            		   System.out.println(op);
+//	            		   count++;
+//	            	   }
+//	            	   else{
+//	            		   break;
+//	            	   }
+//	               }
 	            } catch (FileNotFoundException e) {
 	                e.printStackTrace();
 	            }

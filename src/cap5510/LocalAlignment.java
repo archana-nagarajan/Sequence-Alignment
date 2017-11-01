@@ -107,5 +107,4 @@ public class LocalAlignment extends Alignment {
 		sequence.setQueryStartPos(queryStart);
 		return sequence;
 	}
-
 }
