@@ -45,7 +45,7 @@ public class GlobalAlignment extends Alignment {
 	@Override
 	public OutputSequence align(ProteinSequence query, ProteinSequence data, Map<AlphabetPair, Integer> scoringMap, int penalty) {
 		fillDpMatrix(query, data, scoringMap, penalty);
-//		printDpMatrix();
+		printDpMatrix();
 		OutputSequence sequence = backTrace(dpMatrix[dpMatrix.length-1][dpMatrix[0].length-1], query, data);
 		return sequence;
 	}

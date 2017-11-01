@@ -35,15 +35,15 @@ public class hw1 {
 //	               System.out.println(dataSequences);
 	               List<OutputSequence>outputSequences = new ArrayList<>();
 	               if(alignmentType == 1){
-//	            	   ProteinSequence d = new ProteinSequence("actgttga",1);
-//	            	   ProteinSequence q = new ProteinSequence("acctgttg",2);
-//	            	   outputSequences.add(new GlobalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-//	            	   System.out.println(outputSequences);
-	            	   for(ProteinSequence q : querySequences){
-	            		   for(ProteinSequence d : dataSequences){
-	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-	            		   }
-	            	   }
+	            	   ProteinSequence d = new ProteinSequence("aattcg",1);
+	            	   ProteinSequence q = new ProteinSequence("acatcg",2);
+	            	   outputSequences.add(new GlobalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            	   System.out.println(outputSequences);
+//	            	   for(ProteinSequence q : querySequences){
+//	            		   for(ProteinSequence d : dataSequences){
+//	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            		   }
+//	            	   }
 	               }
 	               else if(alignmentType == 2){
 //	            	   ProteinSequence d = new ProteinSequence("caagac",1);
