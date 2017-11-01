@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,19 +32,34 @@ public class hw1 {
 	               char[] alphabets=parseAlphabet(alphabetFile);
 	               constructScoringMap(scoreMatrix2D,alphabets);
 	               List<ProteinSequence> querySequences = parseQueryFile();
+//	               System.out.println(querySequences);
 	               List<ProteinSequence> dataSequences = parseDataFile();
-	               if(alignmentType==1){
-	            	    new GlobalAlignment();
+//	               System.out.println(dataSequences);
+	               List<OutputSequence>outputSequences = new ArrayList<>();
+	               if(alignmentType == 1){
+	            	  //  new GlobalAlignment();
 	               }
-	               else if(alignmentType==2){
-	            	   //System.out.println(new LocalAlignment(4,4).align("ACTG", "ACTT", scoringMap, gapPenalty));
+	               else if(alignmentType == 2){
+	            	   ProteinSequence d = new ProteinSequence("caagac",1);
+	            	   ProteinSequence q = new ProteinSequence("gaac",2);
+//	            	   for(ProteinSequence q : querySequences){
+//	            		   for(ProteinSequence d : dataSequences){
+//	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            		   }
+//	            	   }
+	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            	   System.out.println(outputSequences);
 	               }
-	               else if(alignmentType==3){
+	               else if(alignmentType == 3){
 	            	   new DovetailAlignment();
 	               }
 	               else{
 	            	   System.out.println("Wrong Input");
 	               }
+//	               Collections.sort(outputSequences, new SortByScore());
+//	               for(int i=0;i< outputCount;i++){
+//	            	   System.out.println(outputSequences);
+//	               }
 	            } catch (FileNotFoundException e) {
 	                e.printStackTrace();
 	            }
@@ -77,10 +93,10 @@ public class hw1 {
     private static void constructScoringMap(int[][] scoreMatrix2D, char[] alphabets) {
 		for(int i=0;i<scoreMatrix2D.length;i++){
 			for(int j=0;j<scoreMatrix2D[0].length;j++){
-				scoringMap.put(new AlphabetPair(alphabets[i],alphabets[j]), scoreMatrix2D[i][j]);
+				scoringMap.put(new AlphabetPair(Character.toLowerCase(alphabets[i]),Character.toLowerCase(alphabets[j])), scoreMatrix2D[i][j]);
 			}
 		}
-		//System.out.println(scoringMap);
+//		System.out.println(scoringMap);
 	}
 
 	private static List<ProteinSequence> parseDataFile() throws FileNotFoundException {
@@ -94,32 +110,42 @@ public class hw1 {
 	private static List<ProteinSequence> parseSequencesFromFile(String fileName) throws FileNotFoundException {
         List<ProteinSequence> result = new ArrayList<>();
         BufferedReader buffer = new BufferedReader(new FileReader(fileName +".txt"));
-        Pattern p = Pattern.compile("(?<=LOC)(.*)(?=\\s)");
+      //  Pattern p = Pattern.compile("(?<=LOC)(.*)(?=\\s)");
         String line;
-        int counter = 0;
         ProteinSequence seq = null;
         StringBuilder builder = new StringBuilder();
+        StringBuilder seqId = null;
+        boolean first = true;
         try {
             while ((line = buffer.readLine()) != null) {
-                Matcher m = p.matcher(line);
-
-                if (m.find()) {
-                    if (counter > 1) {
-                        if (seq != null)
-                            result.add(seq);
-
-                        seq = new ProteinSequence();
-
-                        if (builder.length() > 0)
-                            seq.setSequence(builder.toString());
-
-                        seq.setUid(Integer.valueOf(m.group()));
-                        builder.setLength(0);
-                    }
-                } else {
-                    builder.append(line);
+                if(line.startsWith(">")){
+                	int i = 5;
+                	seqId = new StringBuilder();
+                	while(line.charAt(i)!=' '){
+                		seqId.append(line.charAt(i));
+                		i++;
+                	}
+                	int id = Integer.parseInt(seqId.toString());
+                	if(first || builder.length() > 0){
+                	//	seq = new ProteinSequence(builder.toString(),id);
+                		while(first){
+                			line = buffer.readLine();
+                			if(line.startsWith(">")){
+                				first = false;
+                			}
+                			else{
+                				builder.append(line.toLowerCase());
+                			}
+                		}
+                		seq = new ProteinSequence(builder.toString(),id);
+                		builder = new StringBuilder();
+                		
+                	}
+                	result.add(seq);
                 }
-                counter ++;
+                else{
+                	builder.append(line.toLowerCase());
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();

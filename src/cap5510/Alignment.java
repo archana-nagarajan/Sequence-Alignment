@@ -1,13 +1,11 @@
 package cap5510;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Alignment {
-	int[][] dpMatrix;
+	MatrixCell[][] dpMatrix;
 	public Alignment(int qSize, int dSize){
-		dpMatrix = new int[qSize+1][dSize+1];
+		dpMatrix = new MatrixCell[qSize+1][dSize+1];
 	}
 	public void printDpMatrix(){
 		for(int i=0;i<dpMatrix.length;i++){
@@ -17,6 +15,7 @@ public abstract class Alignment {
 			System.out.println();
 		}
 	}
-	protected abstract int[][] fillDpMatrix(ProteinSequence seq1, ProteinSequence seq2, Map<AlphabetPair,Integer> scoringMap, int penalty);
-	public abstract int align(ProteinSequence seq1, ProteinSequence seq2, Map<AlphabetPair,Integer> scoringMap, int penalty);
+	protected abstract void fillDpMatrix(ProteinSequence query, ProteinSequence data, Map<AlphabetPair,Integer> scoringMap, int penalty);
+	public abstract OutputSequence align(ProteinSequence query, ProteinSequence data, Map<AlphabetPair,Integer> scoringMap, int penalty);
+	protected abstract OutputSequence backTrace(MatrixCell matrixCell, ProteinSequence query, ProteinSequence data);
 }

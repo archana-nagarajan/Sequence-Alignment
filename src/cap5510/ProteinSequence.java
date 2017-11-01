@@ -4,7 +4,18 @@ public class ProteinSequence {
 	private String sequence;
     private int uid;
 
-    public int getUid() {
+    public ProteinSequence(String sequence, int  uid) {
+		super();
+		this.sequence = sequence;
+		this.uid = uid;
+	}
+    
+//    public ProteinSequence() {
+//		this.sequence = null;
+//		this.uid = null;
+//	}
+
+	public int getUid() {
 		return uid;
 	}
 
