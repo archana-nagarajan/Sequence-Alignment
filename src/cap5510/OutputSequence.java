@@ -58,7 +58,7 @@ public class OutputSequence {
 
 	@Override
 	public String toString() {
-		return "Score = " + score + "\n" + data.getUid() + " " + dataStartPos + " " + data.getSequence() + "\n"
-				+ query.getUid() + " " + queryStartPos + " " + query.getSequence();
+		return "Score = " + score + "\n" + data.getUid() + " " + dataStartPos + " " + data.getSequence().toUpperCase() + "\n"
+				+ query.getUid() + " " + queryStartPos + " " + query.getSequence().toUpperCase();
 	}
 }

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class hw1 {
 	               }
 	               Collections.sort(outputSequences, new SortByScore());
 	               int count = 0;
-	               PrintWriter writer = new PrintWriter("dovetail-runtime.txt", "UTF-8");
+//	               PrintWriter writer = new PrintWriter("dovetail-runtime.txt", "UTF-8");
 //	               for(String queryRTime : runningTime){
 //	            	   writer.println(queryRTime);
 //	               }
@@ -100,7 +100,7 @@ public class hw1 {
 	            		   break;
 	            	   }
 	               }
-	               writer.close();
+//	               writer.close();
 	            } catch (FileNotFoundException e) {
 	                e.printStackTrace();
 	            }
@@ -108,7 +108,7 @@ public class hw1 {
 	}
 	
 	private static char[] parseAlphabet(String fileName) throws FileNotFoundException {
-		BufferedReader buffer = new BufferedReader(new FileReader(fileName +".txt"));
+		BufferedReader buffer = new BufferedReader(new FileReader(fileName));
 		String line;
 		char[] alphabets = null;
 		try{
@@ -123,10 +123,26 @@ public class hw1 {
 
 	static void initializeArgs(String[] args) {
     	alignmentType = Integer.valueOf(args[0]);
-        queryFile = args[1];
-        databaseFile = args[2];
-        alphabetFile = args[3];
-        scoringMatrix = args[4];
+    	if(args[1].contains(".txt"))
+    		queryFile = args[1];
+    	else{
+    		queryFile = args[1] + ".txt";
+    	}
+    	if(args[2].contains(".txt"))
+    		databaseFile = args[2];
+    	else{
+    		databaseFile = args[2] + ".txt";
+    	}
+    	if(args[3].contains(".txt"))
+    		alphabetFile = args[3];
+    	else{
+    		alphabetFile = args[3] + ".txt";
+    	}
+    	if(args[4].contains(".txt"))
+    		scoringMatrix = args[4];
+    	else{
+    		scoringMatrix = args[4] + ".txt";
+    	}
         outputCount = Integer.valueOf(args[5]);
         gapPenalty = Integer.valueOf(args[6]);
     }
@@ -150,7 +166,7 @@ public class hw1 {
 
 	private static List<ProteinSequence> parseSequencesFromFile(String fileName) throws FileNotFoundException {
         List<ProteinSequence> result = new ArrayList<>();
-        BufferedReader buffer = new BufferedReader(new FileReader(fileName +".txt"));
+        BufferedReader buffer = new BufferedReader(new FileReader(fileName));
         String line;
         ProteinSequence seq = null;
         StringBuilder builder = new StringBuilder();
@@ -194,7 +210,7 @@ public class hw1 {
 	
 	private static int[][] buildMatrix() throws FileNotFoundException {
         int[][] matrix = null;
-        BufferedReader buffer = new BufferedReader(new FileReader(scoringMatrix +".txt"));
+        BufferedReader buffer = new BufferedReader(new FileReader(scoringMatrix));
 
         String line;
         int row = 0;
