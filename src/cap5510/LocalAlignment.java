@@ -24,7 +24,6 @@ public class LocalAlignment extends Alignment {
 				vertical = dpMatrix[i-1][j].getScore() + penalty;
 				horizontal = dpMatrix[i][j-1].getScore() + penalty;
 				diagonal = dpMatrix[i-1][j-1].getScore() + scoringMap.get(new AlphabetPair(query.getSequence().charAt(i-1), data.getSequence().charAt(j-1)));
-//				System.out.println(vertical + ":" + horizontal + ":" + diagonal);
 				if(vertical >=0 || horizontal>=0 || diagonal>=0){
 					int max = Math.max(diagonal, Math.max(vertical, horizontal));
 					int direction = 0;
@@ -75,26 +74,22 @@ public class LocalAlignment extends Alignment {
 			sequence.setScore(matrixCell.getScore());
 		}
 		int queryStart =  0, dataStart = 0;
-//		querysb.append(query.getSequence().charAt(matrixCell.getRow()));
-//		datasb.append(data.getSequence().charAt(matrixCell.getColumn()));
 		while(matrixCell.getScore()!=0){
 			int direction = matrixCell.getDirection();
 			queryStart =  matrixCell.getRow();
 			dataStart = matrixCell.getColumn();
 			if(direction == 1){ // horizontal - insertion
 				matrixCell = dpMatrix[queryStart][dataStart-1];
-				querysb.append("-");
+				querysb.append(".");
 				datasb.append(data.getSequence().charAt(dataStart-1));
 			}
 			else if(direction == 2){ // vertical - deletion
 				matrixCell = dpMatrix[queryStart-1][dataStart];
 				querysb.append(query.getSequence().charAt(queryStart-1));
-				datasb.append("-");
+				datasb.append(".");
 			}
 			else if(direction == 3){ // diagonal - match/mismatch
 				matrixCell = dpMatrix[queryStart-1][dataStart-1];
-//				System.out.println("row: "+ (matrixCell.getRow()));
-//				System.out.println("col: "+ (matrixCell.getColumn()));
 				querysb.append(query.getSequence().charAt(queryStart-1));
 				datasb.append(data.getSequence().charAt(dataStart-1));
 			}

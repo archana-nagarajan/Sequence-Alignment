@@ -2,6 +2,7 @@ package cap5510;
 
 import java.util.Map;
 
+
 public class GlobalAlignment extends Alignment {
 
 	public GlobalAlignment(int qSize, int dSize) {
@@ -14,11 +15,11 @@ public class GlobalAlignment extends Alignment {
 		int vertical = 0, horizontal = 0, diagonal = 0;
 		dpMatrix[0][0] = new MatrixCell(Constants.NONE, 0, 0, 0);
 		for(int i=1;i<dpMatrix.length;i++){
-			int score = dpMatrix[i-1][0].getScore()+1;
+			int score = dpMatrix[i-1][0].getScore()+penalty;
 			dpMatrix[i][0] = new MatrixCell(Constants.VERTICAL, score, i, 0);
 		}
 		for(int j=1;j<dpMatrix[0].length;j++){
-			int score = dpMatrix[0][j-1].getScore()+1;
+			int score = dpMatrix[0][j-1].getScore()+penalty;
 			dpMatrix[0][j] = new MatrixCell(Constants.HORIZONTAL, score, 0, j);
 		}
 		for(int i=1;i<dpMatrix.length;i++){
@@ -37,7 +38,7 @@ public class GlobalAlignment extends Alignment {
 				else if(max == diagonal){
 					direction = Constants.DIAGONAL;
 				}
-				dpMatrix[i][j] = new MatrixCell(direction, Math.max(diagonal, Math.max(vertical, horizontal)), i, j);
+				dpMatrix[i][j] = new MatrixCell(direction, max, i, j);
 			}
 		}
 	}
@@ -45,7 +46,8 @@ public class GlobalAlignment extends Alignment {
 	@Override
 	public OutputSequence align(ProteinSequence query, ProteinSequence data, Map<AlphabetPair, Integer> scoringMap, int penalty) {
 		fillDpMatrix(query, data, scoringMap, penalty);
-		printDpMatrix();
+//		printDpMatrix();
+//		System.out.println(dpMatrix[dpMatrix.length-1][dpMatrix[0].length-1]);
 		OutputSequence sequence = backTrace(dpMatrix[dpMatrix.length-1][dpMatrix[0].length-1], query, data);
 		return sequence;
 	}
@@ -62,19 +64,19 @@ public class GlobalAlignment extends Alignment {
 		}
 		int queryStart =  0, dataStart = 0;
 		int i = 0, j = 0;
-		while(i <= dpMatrix.length && j <= dpMatrix[0].length ){
+		while(i <= dpMatrix.length-1 && j <= dpMatrix[0].length-1 ){
 			int direction = matrixCell.getDirection();
 			queryStart =  matrixCell.getRow();
 			dataStart = matrixCell.getColumn();
 			if(direction == 1){ // horizontal - insertion
 				matrixCell = dpMatrix[queryStart][dataStart-1];
-				querysb.append("-");
+				querysb.append(".");
 				datasb.append(data.getSequence().charAt(dataStart-1));
 			}
 			else if(direction == 2){ // vertical - deletion
 				matrixCell = dpMatrix[queryStart-1][dataStart];
 				querysb.append(query.getSequence().charAt(queryStart-1));
-				datasb.append("-");
+				datasb.append(".");
 			}
 			else if(direction == 3){ // diagonal - match/mismatch
 				matrixCell = dpMatrix[queryStart-1][dataStart-1];

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class hw1 {
 	static int outputCount;
 	static int gapPenalty;
 	static Map<AlphabetPair, Integer> scoringMap = new HashMap<>();
-	public static void main(String args[]){
+	public static void main(String args[]) throws IOException{
 		if(args.length!=7){
 			System.out.println("Wrong number of arguments");
 		}
@@ -30,59 +31,76 @@ public class hw1 {
 	               char[] alphabets=parseAlphabet(alphabetFile);
 	               constructScoringMap(scoreMatrix2D,alphabets);
 	               List<ProteinSequence> querySequences = parseQueryFile();
-//	               System.out.println(querySequences);
 	               List<ProteinSequence> dataSequences = parseDataFile();
-//	               System.out.println(dataSequences);
 	               List<OutputSequence>outputSequences = new ArrayList<>();
+	               List<String> runningTime = new ArrayList<>();
 	               if(alignmentType == 1){
-	            	   ProteinSequence d = new ProteinSequence("aattcg",1);
-	            	   ProteinSequence q = new ProteinSequence("acatcg",2);
-	            	   outputSequences.add(new GlobalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-	            	   System.out.println(outputSequences);
-//	            	   for(ProteinSequence q : querySequences){
-//	            		   for(ProteinSequence d : dataSequences){
-//	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-//	            		   }
-//	            	   }
+//	            	   ProteinSequence d = new ProteinSequence("aattcg",1);
+//	            	   ProteinSequence q = new ProteinSequence("acatcg",2);
+//	            	   ProteinSequence d = new ProteinSequence("actgttga",1);
+//	            	   ProteinSequence q = new ProteinSequence("acctgttg",2);
+//	            	   outputSequences.add(new GlobalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            	   System.out.println(outputSequences);
+	            	   for(ProteinSequence q : querySequences){
+	            		   long timeStart = System.currentTimeMillis();
+	            		   for(ProteinSequence d : dataSequences){
+	            			   outputSequences.add(new GlobalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            		   }
+	            		   long duration = System.currentTimeMillis() - timeStart;
+	                       runningTime.add(q.getSequence().length()+","+duration);
+	            	   }
 	               }
 	               else if(alignmentType == 2){
 //	            	   ProteinSequence d = new ProteinSequence("caagac",1);
 //	            	   ProteinSequence q = new ProteinSequence("gaac",2);
-	            	   ProteinSequence d = new ProteinSequence("gctggaaggcatta",1);
-	            	   ProteinSequence q = new ProteinSequence("tacaagcagagcacg",2);
-	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-	            	   System.out.println(outputSequences);
-//	            	   for(ProteinSequence q : querySequences){
-//	            		   for(ProteinSequence d : dataSequences){
-//	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-//	            		   }
-//	            	   }
+//	            	   ProteinSequence d = new ProteinSequence("gctggaaggcatta",1);
+//	            	   ProteinSequence q = new ProteinSequence("tacaagcagagcacg",2);
+//	            	   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            	   System.out.println(outputSequences);
+	            	   for(ProteinSequence q : querySequences){
+	            		   long timeStart = System.currentTimeMillis();
+	            		   for(ProteinSequence d : dataSequences){
+	            			   outputSequences.add(new LocalAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            		   }
+	            		   long duration = System.currentTimeMillis() - timeStart;
+	                       runningTime.add(q.getSequence().length()+","+duration);
+	            	   }
 	               }
 	               else if(alignmentType == 3){
-	            	   ProteinSequence d = new ProteinSequence("ccatgac",1);
-	            	   ProteinSequence q = new ProteinSequence("ttccagtg",2);
-	            	   outputSequences.add(new DovetailAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-	            	   System.out.println(outputSequences);
-//	            	   for(ProteinSequence q : querySequences){
-//	            		   for(ProteinSequence d : dataSequences){
-//	            			   outputSequences.add(new DovetailAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
-//	            		   }
-//	            	   }
+//	            	   ProteinSequence d = new ProteinSequence("ccatgac",1);
+//	            	   ProteinSequence q = new ProteinSequence("ttccagtg",2);
+//	            	   outputSequences.add(new DovetailAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+//	            	   System.out.println(outputSequences);
+	            	   for(ProteinSequence q : querySequences){
+	            		   long timeStart = System.currentTimeMillis();
+	            		   for(ProteinSequence d : dataSequences){
+	            			   outputSequences.add(new DovetailAlignment(q.getSequence().length(),d.getSequence().length()).align(q, d, scoringMap, gapPenalty));
+	            		   }
+	            		   long duration = System.currentTimeMillis() - timeStart;
+	                       runningTime.add(q.getSequence().length()+","+duration);
+	            	   }
 	               }
 	               else{
 	            	   System.out.println("Wrong Input");
 	               }
-//	               Collections.sort(outputSequences, new SortByScore());
-//	               int count = 0;
-//	               for(OutputSequence op :  outputSequences){
-//	            	   if(count<=outputCount){
-//	            		   System.out.println(op);
-//	            		   count++;
-//	            	   }
-//	            	   else{
-//	            		   break;
-//	            	   }
+	               Collections.sort(outputSequences, new SortByScore());
+	               int count = 0;
+	               PrintWriter writer = new PrintWriter("dovetail-runtime.txt", "UTF-8");
+//	               for(String queryRTime : runningTime){
+//	            	   writer.println(queryRTime);
 //	               }
+	               for(OutputSequence op :  outputSequences){
+	            	   if(count<outputCount){
+//	            		   writer.println(op.dataStartPos + " : " + op.queryStartPos + " : " + op.getData().getUid() + " : " + op.getQuery().getUid() + " : " + op.getScore());
+//	            		   writer.println(op.getScore());
+	            		   System.out.println(op);
+	            		   count++;
+	            	   }
+	            	   else{
+	            		   break;
+	            	   }
+	               }
+	               writer.close();
 	            } catch (FileNotFoundException e) {
 	                e.printStackTrace();
 	            }
@@ -133,7 +151,6 @@ public class hw1 {
 	private static List<ProteinSequence> parseSequencesFromFile(String fileName) throws FileNotFoundException {
         List<ProteinSequence> result = new ArrayList<>();
         BufferedReader buffer = new BufferedReader(new FileReader(fileName +".txt"));
-      //  Pattern p = Pattern.compile("(?<=LOC)(.*)(?=\\s)");
         String line;
         ProteinSequence seq = null;
         StringBuilder builder = new StringBuilder();
@@ -150,7 +167,6 @@ public class hw1 {
                 	}
                 	int id = Integer.parseInt(seqId.toString());
                 	if(first || builder.length() > 0){
-                	//	seq = new ProteinSequence(builder.toString(),id);
                 		while(first){
                 			line = buffer.readLine();
                 			if(line.startsWith(">")){

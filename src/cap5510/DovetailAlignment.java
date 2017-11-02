@@ -68,14 +68,12 @@ public class DovetailAlignment extends Alignment{
 				column = j;
 			}
 		}
-//		System.out.println(max);
 		OutputSequence sequence = backTrace(dpMatrix[row][column], query, data);
 		return sequence;
 	}
 
 	@Override
 	protected OutputSequence backTrace(MatrixCell matrixCell, ProteinSequence query, ProteinSequence data) {
-//		System.out.println(matrixCell);
 		ProteinSequence querySequence = new ProteinSequence(null,query.getUid());
 		ProteinSequence dataSequence = new ProteinSequence(null,data.getUid());;
 		StringBuilder querysb = new StringBuilder();
@@ -91,13 +89,13 @@ public class DovetailAlignment extends Alignment{
 			int direction = matrixCell.getDirection();
 			if(direction == 1){ // horizontal - insertion
 				matrixCell = dpMatrix[queryStart][dataStart-1];
-				querysb.append("-");
+				querysb.append(".");
 				datasb.append(data.getSequence().charAt(dataStart-1));
 			}
 			else if(direction == 2){ // vertical - deletion
 				matrixCell = dpMatrix[queryStart-1][dataStart];
 				querysb.append(query.getSequence().charAt(queryStart-1));
-				datasb.append("-");
+				datasb.append(".");
 			}
 			else if(direction == 3){ // diagonal - match/mismatch
 				matrixCell = dpMatrix[queryStart-1][dataStart-1];
@@ -109,12 +107,12 @@ public class DovetailAlignment extends Alignment{
 		dataStart = matrixCell.getColumn();
 		int direction = matrixCell.getDirection();
 		if(direction == 1){ // horizontal - insertion
-			querysb.append("-");
+			querysb.append(".");
 			datasb.append(data.getSequence().charAt(dataStart-1));
 		}
 		else if(direction == 2){ // vertical - deletion
 			querysb.append(query.getSequence().charAt(queryStart-1));
-			datasb.append("-");
+			datasb.append(".");
 		}
 		else if(direction == 3){ // diagonal - match/mismatch
 			querysb.append(query.getSequence().charAt(queryStart-1));
